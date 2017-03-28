@@ -11,12 +11,16 @@ package sdes;
 public class SDES {
 
 	public static void main(String[] args) {
-		final byte[] KEY		= {1,1,1,0,0,0,1,1,1,0},
-				     PLAIN_TEXT	= {0,1,0,1,0,1,0,1};
+		final byte[] KEY		= {1,1,1,1,1,1,1,1,1,1},
+				     PLAIN_TEXT	= {1,0,1,0,1,0,1,0};
 		final byte[] CIPHER_TEXT = inversePermutation(Encrypt(KEY, PLAIN_TEXT));
 		System.out.println("Key    Text: " + toString(KEY));
 		System.out.println("Plain  Text: " + toString(PLAIN_TEXT));
 		System.out.println("Cipher Text: " + toString(CIPHER_TEXT));
+		final byte[] PLAIN_TEXT_DEC = inversePermutation(Decrypt(KEY, CIPHER_TEXT));
+		System.out.println("Plain  DEC:  " + toString(PLAIN_TEXT_DEC));
+
+		
 	}
 	public static byte[] Encrypt(byte[] rawkey, byte[] plaintext){
 		final byte[][] KEYS = generateKeys(rawkey);
@@ -127,8 +131,14 @@ public class SDES {
 		}
 	}
 	public static byte[] Decrypt(byte[] rawkey, byte[] ciphertext){
+		byte[][] KEYS = generateKeys(rawkey);
+		byte[] key1 = KEYS[1];
+		byte[] key2 = KEYS[0];
+		KEYS[0] = key1;
+		KEYS[1] = key2;
+		byte[] plaintext   = encryptionRound(initialPermutation(ciphertext), KEYS, 1, 2);
 		
-		return null;
+		return plaintext;
 	}
 	public static byte[][] generateKeys(byte[] rawkey){
 		final byte[] P10 = {3,5,2,7,4,10, 1,9,8,6},
