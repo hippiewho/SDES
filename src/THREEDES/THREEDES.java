@@ -1,31 +1,41 @@
 /**
  * 
  */
-package sdes;
+package THREEDES;
 
 
 /**
  * @author Frank Navarrrete
  *
  */
-public class SDES {
+public class THREEDES {
 
 	public static void main(String[] args) {
-		final byte[] KEY		= {1,1,1,1,1,1,1,1,1,1},
-				     PLAIN_TEXT	= {1,0,1,0,1,0,1,0};
+		final byte[] KEY1		= {0,0,0,0,0,0,0,0,0,0},
+					 KEY2		= {0,0,0,0,0,0,0,0,0,0},
+				     PLAIN_TEXT	= {0,0,0,0,0,0,0,0};
 		
-		
-		final byte[] CIPHER_TEXT = Encrypt(KEY, PLAIN_TEXT);
-		System.out.println("Key    Text: " + toString(KEY));
+//		E3DES(p) = EDES(k1,DDES(k2,EDES(k1, p)))
+		final byte[] CIPHER_TEXT = Encrypt(KEY1, KEY2, PLAIN_TEXT);
 		System.out.println("Plain  Text: " + toString(PLAIN_TEXT));
 		System.out.println("Cipher Text: " + toString(CIPHER_TEXT));
 		
-		final byte[] PLAIN_TEXT_DEC = Decrypt(KEY, CIPHER_TEXT);
+//		D3DES(c) = DDES(k1,EDES(k2,DDES(k1, c)))
+		final byte[] PLAIN_TEXT_DEC = Decrypt(KEY1, KEY2, PLAIN_TEXT);
 		System.out.println("Plain  DEC:  " + toString(PLAIN_TEXT_DEC));
 
 		
 	}
-	public static byte[] Encrypt(byte[] rawkey, byte[] plaintext){
+	public static byte[] Encrypt( byte[] rawkey1, byte[] rawkey2, byte[] plaintext ){
+		return EncryptHelper(rawkey1, DecryptHelper(rawkey2, EncryptHelper(rawkey1, plaintext)));
+	}
+	public static byte[] Decrypt( byte[] rawkey1, byte[] rawkey2, byte[] ciphertext ){
+		return DecryptHelper(rawkey1, EncryptHelper(rawkey2, DecryptHelper(rawkey1, ciphertext)));
+	}
+	
+	
+	
+	public static byte[] EncryptHelper(byte[] rawkey, byte[] plaintext){
 		final byte[][] KEYS = generateKeys(rawkey);
 		byte[] cipherText   = encryptionRound(initialPermutation(plaintext), KEYS, 1, 2);
 		
@@ -133,7 +143,7 @@ public class SDES {
 			return (byte) 0;
 		}
 	}
-	public static byte[] Decrypt(byte[] rawkey, byte[] ciphertext){
+	public static byte[] DecryptHelper(byte[] rawkey, byte[] ciphertext){
 		byte[][] KEYS = generateKeys(rawkey);
 		byte[] key1 = KEYS[1];
 		byte[] key2 = KEYS[0];
