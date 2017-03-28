@@ -13,15 +13,10 @@ public class SDES {
 	public static void main(String[] args) {
 		final byte[] KEY		= {1,1,1,0,0,0,1,1,1,0},
 				     PLAIN_TEXT	= {0,1,0,1,0,1,0,1};
-		final byte[] CIPHER_TEXT = inversePermutation(Encrypt(KEY, PLAIN_TEXT).clone());
+		final byte[] CIPHER_TEXT = inversePermutation(Encrypt(KEY, PLAIN_TEXT));
 		System.out.println("Key    Text: " + toString(KEY));
 		System.out.println("Plain  Text: " + toString(PLAIN_TEXT));
 		System.out.println("Cipher Text: " + toString(CIPHER_TEXT));
-		
-//		final byte[] testKEY = {1,0,1,0,0,0,0,0,1,0};
-//		final byte[] testPLAIN_TEXT = {};
-//		final byte[] testCIPHER_TEXT = inversePermutation(Encrypt(testKEY, testPLAIN_TEXT).clone()).clone();
-
 	}
 	public static byte[] Encrypt(byte[] rawkey, byte[] plaintext){
 		final byte[][] KEYS = generateKeys(rawkey);
@@ -34,7 +29,7 @@ public class SDES {
 			   ciphertextRight = new byte[4],
 			   P4  = new byte[4],
 			   Output = new byte[4];
-		
+
 		for(int i = 0; i < (text.length/2); i++){
 			ciphertextLeft[i] = text[i];
 		}
@@ -42,21 +37,18 @@ public class SDES {
 			ciphertextRight[i - 4] = text[i];
 		}
 
-		P4 = functionX(ciphertextRight.clone(), keys[round - 1].clone());
-		
-		System.out.println("This is P4 " + round + ": " + toString(P4));
-		System.out.println("This is ciphertextLeft " + round + ": " + toString(ciphertextLeft));
+		P4 = functionX(ciphertextRight, keys[round - 1]);
 
-		
 		for(int i = 0; i < 4; i++){
 			Output[i] = (byte) (ciphertextLeft[i]^P4[i]);
 		}		
 
 		if(round == rounds){
-			return combine(Output.clone(), ciphertextRight.clone()).clone();
+			return combine(Output, ciphertextRight);
+			
 		} else {
-			byte[] ciphertext = combine(ciphertextRight.clone(),Output.clone());
-			return encryptionRound(ciphertext.clone(), keys, ++round, rounds).clone();
+			byte[] ciphertext = combine(ciphertextRight,Output);
+			return encryptionRound(ciphertext, keys, ++round, rounds);
 		}
 	}
 	public static byte[] combine(byte[] ciphertextLeft, byte[] ciphertextRight) {
@@ -79,7 +71,7 @@ public class SDES {
 		for(int i = 0; i < EP.length; i++){
 			expandedCipher[i] = ciphertextRight[EP[i] - 1];
 		}
-
+		
 		for(int i = 0; i < expandedCipher.length/2; i++){
 			xorLeft[i] = (byte) (expandedCipher[i]^key[i]);
 		}
@@ -89,19 +81,20 @@ public class SDES {
 		}
 
 		P4 = sbox(xorLeft, xorRight);
-
-		return P4.clone();
+		
+		return P4;
 	}
 	public static byte[] sbox(byte[] xorLeft, byte[] xorRight) {
 		int[][] s1 = {{1,0,3,2}, {3,2,1,0}, {0,2,1,3}, {3,1,3,2}},
 				s2 = {{0,1,2,3}, {2,0,1,3}, {3,0,1,0}, {2,1,0,3}};
-		int s1L = Integer.parseUnsignedInt("" +  xorLeft[0] + xorLeft[1], 2),
-			s1R = Integer.parseUnsignedInt("" +  xorLeft[2] + xorLeft[3], 2),
-			s2L = Integer.parseUnsignedInt("" +  xorRight[0] + xorRight[1], 2),
-			s2R = Integer.parseUnsignedInt("" +  xorRight[2] + xorRight[3], 2);	
 		byte[] sbox1 = new byte[2];
 		byte[] sbox2 = new byte[2];
 		byte[] P4    = new byte[4];
+		
+		int s1L = Integer.parseUnsignedInt("" +  xorLeft[0] + xorLeft[3], 2),
+			s1R = Integer.parseUnsignedInt("" +  xorLeft[1] + xorLeft[2], 2),
+			s2L = Integer.parseUnsignedInt("" +  xorRight[0] + xorRight[3], 2),
+			s2R = Integer.parseUnsignedInt("" +  xorRight[1] + xorRight[2], 2);	
 		
 		String sBox1 = Integer.toBinaryString(s1[s1L][s1R]),
 			   sBox2 = Integer.toBinaryString(s2[s2L][s2R]);
@@ -113,17 +106,17 @@ public class SDES {
 			sBox2 = "0" + sBox2;
 		}
 		
+		
 		sbox1[0] = toByte(sBox1.charAt(0));
 		sbox1[1] = toByte(sBox1.charAt(1));
 		sbox2[0] = toByte(sBox2.charAt(0));
 		sbox2[1] = toByte(sBox2.charAt(1));
 		
-		for(int i = 0; i < 2; i++){
-			P4[i] = sbox1[i];
-		}
-		for(int i = 2; i < 4; i++){
-			P4[i] = sbox2[i - 2];
-		}
+		P4[0] = sbox1[0];
+		P4[1] = sbox1[1];
+		P4[2] = sbox2[0];
+		P4[3] = sbox2[1];
+
 		return p4Permutation(P4);
 	}
 	public static byte   toByte(char charAt) {
@@ -203,7 +196,6 @@ public class SDES {
 		keys[1] = permutation8.clone();
 		return keys.clone();
 	}
-	@SuppressWarnings("unused")
 	public static String toString(byte[] array){
 		String string = "";
 		for(int i = 0; i < array.length; i++){
@@ -217,7 +209,7 @@ public class SDES {
 		for(int i = 0; i < plaintext.length; i++){
 			permutation[i] = plaintext[IP[i] - 1];
 		}
-		return permutation.clone();
+		return permutation;
 	}
 	public static byte[] inversePermutation(byte[] text) {
 		final byte[] IPinverse = {4,1,3,5,7,2,8,6};
@@ -225,6 +217,7 @@ public class SDES {
 		for(int i = 0; i < text.length; i++){
 			permutation[i] = text[IPinverse[i] - 1];
 		}
+
 		return permutation.clone();
 	}	
 	public static byte[] p4Permutation(byte[] text) {
@@ -233,7 +226,7 @@ public class SDES {
 		for(int i = 0; i < text.length; i++){
 			permutation[i] = text[IPinverse[i] - 1];
 		}
-		return permutation.clone();
+		return permutation;
 	}
 	
 }
