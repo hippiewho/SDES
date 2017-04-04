@@ -237,7 +237,7 @@ public class Driver {
 					+ "Enter either 0 or 1 followed by enter. The Key is 10 bytes Long.");
 			String byteInt = scanner.next();
 
-			while(byteInt.length() < 0 || byteInt.length() > 10 || !(isBinary(byteInt))){
+			while(byteInt.length() != 10 || !(isBinary(byteInt))){
 				System.out.println("Keys are only 10 integers long and Must only be 0s or 1s.");
 				byteInt = scanner.next();
 
@@ -248,7 +248,7 @@ public class Driver {
 					+ "Enter either 0 or 1 followed by enter. The Text is 8 bytes Long.");
 			byteInt = scanner.next();
 
-			while(byteInt.length() < 0 || byteInt.length() > 10 || !(isBinary(byteInt))){
+			while(byteInt.length() != 8 || !(isBinary(byteInt))){
 				System.out.println("Enter only 1 or 0.\n");
 				byteInt = scanner.next();
 			}
@@ -263,7 +263,7 @@ public class Driver {
 					+ "Enter either 0 or 1 followed by enter. The Key is 10 bytes Long.");
 			String byteInt = scanner.next();
 
-			while(byteInt.length() < 0 || byteInt.length() > 10 || !(isBinary(byteInt))){
+			while(byteInt.length() != 10 || !(isBinary(byteInt))){
 				System.out.println("Enter only 1 or 0.\n");
 				byteInt = scanner.next();
 			}
@@ -274,8 +274,8 @@ public class Driver {
 			for(int i = 0; i < 8; i++){
 				byteInt = scanner.next();
 
-				while(byteInt.length() < 0 || byteInt.length() > 10 || !(isBinary(byteInt))){
-					System.out.println("Enter only 1 or 0.");
+				while(byteInt.length() != 8 || !(isBinary(byteInt))){
+					System.out.println("Enter only 1 or 0. The Text must be 8 bytes Long.");
 					byteInt = scanner.next();
 				}
 				ciphertext = StringToByte(byteInt);
@@ -297,7 +297,7 @@ public class Driver {
 
 			String byteInt = scanner.next();
 
-			while(byteInt.length() < 0 || byteInt.length() > 10 || !(isBinary(byteInt))){
+			while(byteInt.length() != 10 ||  !(isBinary(byteInt))){
 				System.out.println("Enter only 1 or 0.");
 				byteInt = scanner.next();
 			}
@@ -307,7 +307,7 @@ public class Driver {
 					+ "Enter either 0 or 1 followed by enter. The Key is 10 bytes Long.");
 			byteInt = scanner.next();
 
-			while(byteInt.length() < 0 || byteInt.length() > 10 || !(isBinary(byteInt))){
+			while(byteInt.length() != 10 || !(isBinary(byteInt))){
 				System.out.println("Enter only 1 or 0.");
 				byteInt = scanner.next();
 			}
@@ -317,7 +317,7 @@ public class Driver {
 					+ "Enter either 0 or 1 followed by enter. The Text is 8 bytes Long.");
 			byteInt = scanner.next();
 
-			while(byteInt.length() < 0 || byteInt.length() > 10 || !(isBinary(byteInt))){
+			while(byteInt.length() != 8 || !(isBinary(byteInt))){
 				System.out.println("Enter only 1 or 0.");
 				byteInt = scanner.next();
 			}
@@ -333,7 +333,7 @@ public class Driver {
 					+ "Enter either 0 or 1 followed by enter. The Key is 10 bytes Long.");
 			String byteInt = scanner.next();
 
-			while(byteInt.length() < 0 || byteInt.length() > 10 || !(isBinary(byteInt))){
+			while(byteInt.length() != 10 || !(isBinary(byteInt))){
 				System.out.println("Enter only 1 or 0.");
 				byteInt = scanner.next();
 			}
@@ -343,7 +343,7 @@ public class Driver {
 					+ "Enter either 0 or 1 followed by enter. The Key is 10 bytes Long.");
 			byteInt = scanner.next();
 
-			while(byteInt.length() < 0 || byteInt.length() > 10 || !(isBinary(byteInt))){
+			while(byteInt.length() != 10 || !(isBinary(byteInt))){
 				System.out.println("Enter only 1 or 0.");
 				byteInt = scanner.next();
 			}
@@ -353,7 +353,7 @@ public class Driver {
 					+ "Enter either 0 or 1 followed by enter. The Text is 8 bytes Long.");
 			byteInt = scanner.next();
 
-			while(byteInt.length() < 0 || byteInt.length() > 10 || !(isBinary(byteInt))){
+			while(byteInt.length() != 8 || !(isBinary(byteInt))){
 				System.out.println("Enter only 1 or 0.");
 				byteInt = scanner.next();
 			}
