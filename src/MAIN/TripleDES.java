@@ -1,39 +1,46 @@
 /**
  * 
  */
-package sdes;
-
-import support.CASCII;
+package MAIN;
 
 /**
  * @author Frank Navarrrete
  *
  */
-public class SDES {
+public class TripleDES {
 
-	byte[] KEY = new byte[10];
-	byte[] PLAIN_TEXT = new byte[8];
-	byte[] CIPHER_TEXT = new byte[8];
-	CASCII cascii = new CASCII();
+	byte[] KEY1 = new byte[10], 
+		   KEY2 = new byte[10], 
+		   PLAIN_TEXT = new byte[8], 
+		   CIPHER_TEXT = new byte[8];
 
-	public byte[] encodeCharacter(byte[] k, byte[] pt) {
-		this.KEY = k.clone();
+	public byte[] encodeCharacter(byte[] k1, byte[] k2, byte[] pt) {
+		this.KEY1 = k1.clone();
+		this.KEY2 = k2.clone();
 		this.PLAIN_TEXT = pt.clone();
-		this.CIPHER_TEXT = Encrypt(KEY, PLAIN_TEXT);
-
-		// byte[] CP_TEMP = new byte[5]
+		this.CIPHER_TEXT = Decrypt(KEY1, KEY2, PLAIN_TEXT);
 		return CIPHER_TEXT;
 	}
 
-	public void decodeCharacter(byte[] k, byte[] ct) {
-		this.KEY = k.clone();
+	public byte[] decodeCharacter(byte[] k1, byte[] k2, byte[] ct) {
+		this.KEY1 = k1.clone();
+		this.KEY2 = k2.clone();
 		this.CIPHER_TEXT = ct.clone();
-		this.CIPHER_TEXT = Decrypt(KEY, PLAIN_TEXT);
-		System.out.println(PLAIN_TEXT);
-
+		this.PLAIN_TEXT = Decrypt(KEY1, KEY2, CIPHER_TEXT);
+		return PLAIN_TEXT;
 	}
 
-	public byte[] Encrypt(byte[] rawkey, byte[] plaintext) {
+	public byte[] Encrypt(byte[] rawkey1, byte[] rawkey2, byte[] plaintext) {
+		// E3DES(p) = EDES(k1,DDES(k2,EDES(k1, p)))
+		return EncryptHelper(rawkey1, DecryptHelper(rawkey2, EncryptHelper(rawkey1, plaintext)));
+	}
+
+	public byte[] Decrypt(byte[] rawkey1, byte[] rawkey2, byte[] ciphertext) {
+		// D3DES(c) = DDES(k1,EDES(k2,DDES(k1, c)))
+		return DecryptHelper(rawkey1, EncryptHelper(rawkey2, DecryptHelper(rawkey1, ciphertext)));
+	}
+
+	public byte[] EncryptHelper(byte[] rawkey, byte[] plaintext) {
 		final byte[][] KEYS = generateKeys(rawkey);
 		byte[] cipherText = encryptionRound(initialPermutation(plaintext), KEYS, 1, 2);
 
@@ -139,7 +146,7 @@ public class SDES {
 		}
 	}
 
-	public byte[] Decrypt(byte[] rawkey, byte[] ciphertext) {
+	public byte[] DecryptHelper(byte[] rawkey, byte[] ciphertext) {
 		byte[][] KEYS = generateKeys(rawkey);
 		byte[] key1 = KEYS[1];
 		byte[] key2 = KEYS[0];
