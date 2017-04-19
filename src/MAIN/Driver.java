@@ -485,35 +485,17 @@ public class Driver {
 			System.out.println((i+1) + ") " + BytetoString(keysSDES[i]) + "  " + BytetoString(sdes.Decrypt(keysSDES[i], ciphertextSDES[i-4])) + "   " +  BytetoString(ciphertextSDES[i-4]) ); 
 		}
 		
-//		System.out.println("1) " + BytetoString(keysSDES[0]) + " " + BytetoString(plaintextSDES[0]) + " " + BytetoString(sdes.Encrypt(keysSDES[0], plaintextSDES[0])) ); 
-//		System.out.println("2) " + BytetoString(keysSDES[1]) + " " + BytetoString(sdes.Encrypt(keysSDES[1], plaintextSDES[1])) ); 
-//		System.out.println("3) " + BytetoString(keysSDES[2]) + " " + BytetoString(sdes.Encrypt(keysSDES[2], plaintextSDES[2])) ); 
-//		System.out.println("4) " + BytetoString(keysSDES[3]) + " " + BytetoString(sdes.Encrypt(keysSDES[3], plaintextSDES[3])) ); 
-//		System.out.println("5) " + BytetoString(keysSDES[4]) + " " + BytetoString(sdes.Encrypt(keysSDES[4], ciphertextSDES[0])) ); 
-//		System.out.println("6) " + BytetoString(keysSDES[5]) + " " + BytetoString(sdes.Encrypt(keysSDES[5], ciphertextSDES[1])) ); 
-//		System.out.println("7) " + BytetoString(keysSDES[6]) + " " + BytetoString(sdes.Encrypt(keysSDES[6], ciphertextSDES[2])) ); 
-//		System.out.println("8) " + BytetoString(keysSDES[7]) + " " + BytetoString(sdes.Encrypt(keysSDES[7], ciphertextSDES[3])) ); 
-	
 		//TDES
 		System.out.println("\nTDES:");
 		System.out.println("#  " + "KEY1:    " + "   " + "Key2:" + "        " + "Plaintext:" + " " + "CipherText:" ); 
 
 		for(int i = 0; i < 4; i++){
-			System.out.println((i+1) + ") " + BytetoString(keys1TDES[0]) + "  " + BytetoString(keys2TDES[0]) + "   " + BytetoString(plaintextTDES[0]) + "   " +BytetoString(tdes.Encrypt(keys2TDES[0], keys1TDES[0], plaintextTDES[0])) ); 
+			System.out.println((i+1) + ") " + BytetoString(keys1TDES[i]) + "  " + BytetoString(keys2TDES[i]) + "   " + BytetoString(plaintextTDES[i]) + "   " +BytetoString(tdes.Encrypt(keys1TDES[i], keys2TDES[i], plaintextTDES[i])) ); 
 		}
 		
 		for(int i = 4; i < 8; i++){
-			System.out.println((i+1) + ") " + BytetoString(keys1TDES[0]) + "  " + BytetoString(keys2TDES[0]) + "   " + BytetoString(tdes.Decrypt(keys2TDES[0], keys1TDES[0], ciphertextTDES[0])) + "   " +  BytetoString(ciphertextTDES[0]) ); 
+			System.out.println((i+1) + ") " + BytetoString(keys1TDES[i]) + "  " + BytetoString(keys2TDES[i]) + "   " + BytetoString(tdes.Decrypt(keys1TDES[i], keys2TDES[i], ciphertextTDES[i - 4])) + "   " +  BytetoString(ciphertextTDES[i-4]) ); 
 		}
-		
-//		System.out.println("1) " + BytetoString(keys1TDES[0]) + " " + BytetoString(keys2TDES[0]) + " " + BytetoString(tdes.Encrypt(keys2TDES[0], keys1TDES[0], plaintextTDES[0])) ); 
-//		System.out.println("2) " + BytetoString(keys1TDES[1]) + " " + BytetoString(keys2TDES[1]) + " " + BytetoString(tdes.Encrypt(keys1TDES[1], keys1TDES[1], plaintextTDES[1])) ); 
-//		System.out.println("3) " + BytetoString(keys1TDES[2]) + " " + BytetoString(keys2TDES[2]) + " " + BytetoString(tdes.Encrypt(keys1TDES[2], keys1TDES[2], plaintextTDES[2])) ); 
-//		System.out.println("4) " + BytetoString(keys1TDES[3]) + " " + BytetoString(keys2TDES[3]) + " " + BytetoString(tdes.Encrypt(keys1TDES[3], keys1TDES[3], plaintextTDES[3])) ); 
-//		System.out.println("5) " + BytetoString(keys1TDES[4]) + " " + BytetoString(keys2TDES[4]) + " " + BytetoString(tdes.Encrypt(keys1TDES[4], keys1TDES[4], ciphertextTDES[0])) ); 
-//		System.out.println("6) " + BytetoString(keys1TDES[5]) + " " + BytetoString(keys2TDES[5]) + " " + BytetoString(tdes.Encrypt(keys1TDES[5], keys1TDES[5], ciphertextTDES[1])) ); 
-//		System.out.println("7) " + BytetoString(keys1TDES[6]) + " " + BytetoString(keys2TDES[6]) + " " + BytetoString(tdes.Encrypt(keys1TDES[6], keys1TDES[6], ciphertextTDES[2])) ); 
-//		System.out.println("8) " + BytetoString(keys1TDES[7]) + " " + BytetoString(keys2TDES[7]) + " " + BytetoString(tdes.Encrypt(keys1TDES[7], keys1TDES[7], ciphertextTDES[3])) );
 		System.out.println("");
 	}
 	
